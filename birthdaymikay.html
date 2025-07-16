@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Indae Mekai!</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a consistent cursive feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Dancing Script', cursive; /* Main cursive font for ALL text */
+            background-color: #fce4ec; /* Light pink background */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><text x="0" y="20" font-size="20" fill="%23e91e63">💖</text></svg>') 12 12, auto; /* Cute heart cursor */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #4a4a4a; /* Slightly darker text for readability against light pink */
+        }
+        /* Override Tailwind's default font for specific elements to ensure cursive */
+        h1, h2, p, span, button, div {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .star {
+            position: absolute;
+            animation: twinkle 2s infinite ease-in-out alternate;
+        }
+        @keyframes twinkle {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        /* Custom styles for image frames to mimic the inspiration */
+        .photo-frame {
+            border: 8px solid white;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transform: rotate(var(--rotation, 0deg)); /* Allow individual rotation */
+            transition: transform 0.3s ease-in-out;
+        }
+        .photo-frame:hover {
+            transform: scale(1.05) rotate(var(--rotation, 0deg));
+        }
+        .speech-bubble {
+            background-color: #ffe0b2; /* Light orange/peach for contrast */
+            border-radius: 15px;
+            padding: 8px 15px;
+            position: absolute;
+            font-size: 0.875rem; /* text-sm */
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            /* Keep speech bubbles readable, even if cursive is applied to content */
+            font-family: 'Dancing Script', cursive; /* Apply cursive here too */
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #ffe0b2; /* Match bubble background */
+            bottom: -8px;
+            left: 20px;
+        }
+
+        /* Floating balloons */
+        .balloon {
+            position: absolute;
+            font-size: 3rem;
+            animation: floatUp 15s infinite ease-in-out;
+            opacity: 0.8;
+            z-index: 0; /* Behind main content */
+        }
+        .balloon:nth-child(1) { left: 5%; animation-duration: 12s; animation-delay: 0s; }
+        .balloon:nth-child(2) { left: 15%; animation-duration: 14s; animation-delay: 2s; }
+        .balloon:nth-child(3) { left: 25%; animation-duration: 10s; animation-delay: 4s; }
+        .balloon:nth-child(4) { left: 70%; animation-duration: 13s; animation-delay: 1s; }
+        .balloon:nth-child(5) { left: 85%; animation-duration: 11s; animation-delay: 3s; }
+        .balloon:nth-child(6) { left: 40%; animation-duration: 16s; animation-delay: 5s; }
+        .balloon:nth-child(7) { left: 60%; animation-duration: 9s; animation-delay: 0.5s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Meme sticker styling */
+        .meme-sticker {
+            position: absolute;
+            width: 100px; /* Adjust size as needed */
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 20; /* Above photos */
+            transition: transform 0.2s ease-in-out;
+        }
+        .meme-sticker:hover {
+            transform: scale(1.1) rotate(var(--rotation, 0deg));
+        }
+
+        /* Music button styling */
+        #music-control-button {
+            background-color: #ec407a; /* Pink */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-family: 'Dancing Script', cursive; /* Apply cursive here */
+        }
+        #music-control-button:hover {
+            background-color: #d81b60; /* Darker pink */
+        }
+
+        /* Confetti effect */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--confetti-color);
+            border-radius: 50%;
+            animation: fall var(--fall-duration) linear forwards;
+            opacity: 0;
+            z-index: 9999;
+        }
+
+        @keyframes fall {
+            0% { transform: translate(var(--start-x), var(--start-y)) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--end-x), 100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Happy Birthday text animation */
+        .animate-pop-in {
+            animation: popIn 1s ease-out forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Open Me Overlay */
+        #open-me-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8bbd0; /* Soft pink overlay */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000; /* Ensure it's on top */
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        #open-me-overlay.hidden-overlay {
+            opacity: 0;
+            transform: translateY(-100%); /* Slide up */
+            pointer-events: none; /* Disable interaction once hidden */
+        }
+        .open-me-card {
+            background-color: white;
+            padding: 3rem 4rem;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease-in-out;
+            border: 5px solid #ec407a;
+        }
+        .open-me-card:hover {
+            transform: scale(1.05);
+        }
+        .open-me-card h2 {
+            font-size: 3rem;
+            color: #ec407a;
+            margin-bottom: 1rem;
+        }
+        .open-me-card p {
+            font-size: 1.5rem;
+            color: #880e4f;
+        }
+
+        /* Hide main content initially */
+        #main-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            width: 100%; /* Ensure it takes full width */
+            padding: 1rem; /* Add padding to body for overall spacing */
+            box-sizing: border-box; /* Include padding in width calculation */
+            max-width: 100%; /* Ensure it doesn't overflow */
+        }
+        #main-content.visible-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Adjust spacing for cursive font */
+        .text-lg, .text-xl, .text-2xl, .text-3xl, .text-4xl, .text-5xl, .text-6xl, .text-7xl {
+            line-height: 1.6; /* More space between lines for cursive */
+            letter-spacing: 0.05em; /* Slightly more space between letters */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Open Me Overlay -->
+    <div id="open-me-overlay">
+        <div class="open-me-card" id="open-me-card">
+            <h2>Open Me!</h2>
+            <p>A special message just for you!</p>
+            <span class="text-6xl mt-4 block">💌</span>
+        </div>
+    </div>
+
+    <!-- Main Content (initially hidden) -->
+    <div id="main-content" class="flex flex-col items-center justify-center min-h-screen p-4 text-gray-800 relative">
+
+        <!-- Floating Balloons -->
+        <div class="balloon" style="color: #ff80ab;">🎈</div>
+        <div class="balloon" style="color: #80cbc4;">🎁</div>
+        <div class="balloon" style="color: #ffab91;">🎂</div>
+        <div class="balloon" style="color: #c5e1a5;">🎉</div>
+        <div class="balloon" style="color: #e6ee9c;">💖</div>
+        <div class="balloon" style="color: #a7ffeb;">✨</div>
+        <div class="balloon" style="color: #cf93d3;">🥳</div>
+
+        <!-- Decorative elements (stars, flower, paperclip, more cute emojis) -->
+        <div class="star top-10 left-10 text-pink-500 text-4xl transform rotate-12">&#9733;</div>
+        <div class="star top-20 right-20 text-purple-400 text-3xl transform -rotate-6">&#9733;</div>
+        <div class="star bottom-10 left-1/4 text-pink-300 text-2xl transform rotate-45">&#9733;</div>
+        <div class="star bottom-20 right-1/3 text-purple-500 text-5xl transform -rotate-12">&#9733;</div>
+
+        <!-- Flower (simple SVG or emoji) -->
+        <div class="absolute top-20 left-20 text-pink-600 text-6xl transform rotate-45">🌸</div>
+
+        <!-- Paperclip (simple SVG or emoji) -->
+        <div class="absolute top-5 right-5 text-gray-500 text-5xl transform rotate-90">📎</div>
+
+        <!-- More cute emojis -->
+        <div class="absolute top-1/4 left-5 text-yellow-400 text-5xl transform rotate-15">✨</div>
+        <div class="absolute bottom-1/4 right-5 text-blue-300 text-4xl transform -rotate-20">🎀</div>
+        <div class="absolute top-1/2 left-10 text-red-400 text-3xl transform rotate-30">❤️</div>
+        <div class="absolute bottom-1/2 right-10 text-green-300 text-3xl transform -rotate-25">💚</div>
+
+
+        <main class="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl mx-auto p-6 md:p-10 bg-pink-700 bg-opacity-70 rounded-xl card-shadow text-white">
+
+            <h1 id="main-title" class="text-5xl md:text-7xl text-pink-200 text-center mb-4 leading-tight">Happy Birthday!</h1>
+            <p class="text-3xl md:text-5xl font-bold text-white text-center mb-8">Indae Mekai</p>
+
+            <div class="text-center mb-12">
+                <p class="text-xl md:text-2xl text-pink-100 mb-2">Your special day is almost here!</p>
+                <div id="countdown" class="text-4xl md:text-6xl font-extrabold text-purple-300">
+                    <span id="days">00</span>d
+                    <span id="hours">00</span>h
+                    <span id="minutes">00</span>m
+                    <span id="seconds">00</span>s
+                </div>
+                <p id="birthday-message" class="text-xl md:text-2xl text-green-300 mt-4 hidden">Happy Birthday, Indae Mekai! 🎉</p>
+            </div>
+
+            <!-- Music Control Button -->
+            <button id="music-control-button" class="mb-8">Play Birthday Song</button>
+            <audio id="birthday-song" loop>
+                <!-- IMPORTANT: Replace this URL with your actual "Happy Birthday" song file! -->
+                <source src="happy-birthday-house-373134.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+
+
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full relative">
+                <!-- Meme Sticker 1 -->
+                <img src="2c92481d3ce8dc4f73447c7b3cc6ee36.jpg" alt="Meme Sticker 1" class="meme-sticker top-0 left-1/4 transform -translate-x-1/2 -translate-y-1/2 rotate-12" style="--rotation: 12deg;">
+                <!-- Meme Sticker 2 -->
+                <img src="9f8cbf8783eeff51f02be63ff912b2b8.jpg" alt="Meme Sticker 2" class="meme-sticker bottom-0 right-1/4 transform translate-x-1/2 translate-y-1/2 -rotate-8" style="--rotation: -8deg;">
+                <!-- Meme Sticker 3 -->
+                <img src="cat1.jpg" alt="Meme Sticker 3" class="meme-sticker top-1/2 left-5 transform -translate-y-1/2 rotate-20" style="--rotation: 20deg;">
+                <!-- Meme Sticker 4 -->
+                <img src="45d2cf21a3f845aeeb8678a5d5b7aa3e.jpg" alt="Meme Sticker 4" class="meme-sticker bottom-1/3 right-5 transform translate-y-1/2 -rotate-15" style="--rotation: -15deg;">
+
+
+                <!-- Photo 1: Main photo inspired by the image -->
+                <div class="photo-frame w-full max-w-xs mx-auto" style="--rotation: -5deg;">
+                    <img src="IMG_20250716_143114_373.jpg" alt="Indae Mekai main photo" class="w-full h-auto object-cover rounded-md">
+                    <div class="speech-bubble bottom-2 left-2">So cute!</div>
+                </div>
+
+                <!-- Photo 2: Dog photo -->
+                <div class="photo-frame w-full max-w-xs mx-auto" style="--rotation: 8deg;">
+                    <img src="IMG_20250716_143115_522.jpg" alt="Cute dog" class="w-full h-auto object-cover rounded-md">
+                    <div class="speech-bubble top-2 right-2">wowers</div>
+                </div>
+
+                <!-- Photo 3: Friends photo -->
+                <div class="photo-frame w-full max-w-xs mx-auto" style="--rotation: -3deg;">
+                    <img src="IMG_20250716_143116_805.jpg" alt="Friends together" class="w-full h-auto object-cover rounded-md">
+                    <div class="speech-bubble bottom-2 left-2">oyeah!</div>
+                </div>
+
+                <!-- Photo 4: Another cute photo -->
+                <div class="photo-frame w-full max-w-xs mx-auto" style="--rotation: 10deg;">
+                    <img src="IMG_20250716_143118_429.jpg" alt="Another cute photo" class="w-full h-auto object-cover rounded-md">
+                    <div class="speech-bubble top-2 left-2">Cutie!</div>
+                </div>
+
+                <!-- Add more photos as needed, adjust rotation -->
+                <div class="photo-frame w-full max-w-xs mx-auto" style="--rotation: -15deg;">
+                    <img src="IMG_20250716_143120_202.jpg" alt="Special Day" class="w-full h-auto object-cover rounded-md">
+                </div>
+                <div class="photo-frame w-full max-w-xs mx-auto" style="--rotation: 5deg;">
+                    <img src="IMG_20250716_143121_567.jpg" alt="Memories" class="w-full h-auto object-cover rounded-md">
+                </div>
+            </section>
+
+            <section class="mt-12 w-full text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-pink-200 mb-4">A Special Message for You!</h2>
+                <p class="text-lg md:text-xl text-pink-100 leading-relaxed mb-4">
+                    My dearest Indae Mekai,
+                    <br><br>
+                    As your special day approaches, my heart is filled with so much joy and gratitude for having you in my life. You bring so much light, laughter, and warmth to everyone around you. Every moment shared with you is a treasure, and I cherish all the memories we've made.
+                    <br><br>
+                    I hope this little surprise brings a smile to your face and reminds you just how much you are loved and appreciated. May your birthday be as wonderful and extraordinary as you are, filled with all the happiness, dreams, and sweet moments you deserve. Here's to celebrating you, today and always!
+                </p>
+                <p class="text-lg md:text-xl text-pink-100 mt-4">
+                    From your dearest friend,
+                    <br>
+                    Emjay ❤️
+                </p>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Set the birthday date and time
+        // Note: Month is 0-indexed (July is 6)
+        // Assuming "tomorrow" means July 16th, 2025, 2:58 PM
+        const birthdayDate = new Date("2025-07-16T14:58:00").getTime();
+
+        const openMeOverlay = document.getElementById('open-me-overlay');
+        const openMeCard = document.getElementById('open-me-card');
+        const mainContent = document.getElementById('main-content');
+        const countdownElement = document.getElementById('countdown');
+        const birthdayMessageElement = document.getElementById('birthday-message');
+        const daysElement = document.getElementById('days');
+        const hoursElement = document.getElementById('hours');
+        const minutesElement = document.getElementById('minutes');
+        const secondsElement = document.getElementById('seconds');
+        const birthdaySong = document.getElementById('birthday-song');
+        const musicControlButton = document.getElementById('music-control-button');
+        const mainTitle = document.getElementById('main-title');
+
+        let countdownInterval; // Declare interval variable globally
+
+        // Function to play birthday song
+        function playBirthdaySong() {
+            if (birthdaySong.paused) {
+                birthdaySong.play()
+                    .then(() => {
+                        musicControlButton.textContent = "Pause Birthday Song";
+                    })
+                    .catch(error => {
+                        console.error("Autoplay prevented or other error:", error);
+                        // User might need to click the button first due to browser autoplay policies
+                    });
+            } else {
+                birthdaySong.pause();
+                musicControlButton.textContent = "Play Birthday Song";
+            }
+        }
+
+        // Function to create confetti
+        function createConfetti() {
+            const colors = ['#FFC0CB', '#FF69B4', '#FF1493', '#C71585', '#DA70D6', '#BA55D3', '#F06292', '#E91E63']; // Pink and purple shades
+            const numConfetti = 150; // More confetti!
+            const body = document.body;
+
+            for (let i = 0; i < numConfetti; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.setProperty('--confetti-color', colors[Math.floor(Math.random() * colors.length)]);
+                confetti.style.setProperty('--start-x', `${Math.random() * 100}vw`);
+                confetti.style.setProperty('--start-y', `${Math.random() * -20}vh`); // Start above viewport
+                confetti.style.setProperty('--end-x', `${Math.random() * 100}vw`);
+                confetti.style.setProperty('--fall-duration', `${Math.random() * 3 + 2}s`); // 2 to 5 seconds
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.top = `${Math.random() * -10}vh`; // Initial position above screen
+
+                body.appendChild(confetti);
+
+                // Remove confetti after animation to prevent DOM bloat
+                confetti.addEventListener('animationend', () => {
+                    confetti.remove();
+                });
+            }
+        }
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = birthdayDate - now;
+
+            // Calculate time units
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the results
+            daysElement.textContent = String(days).padStart(2, '0');
+            hoursElement.textContent = String(hours).padStart(2, '0');
+            minutesElement.textContent = String(minutes).padStart(2, '0');
+            secondsElement.textContent = String(seconds).padStart(2, '0');
+
+            // If the countdown is over, display a message and trigger effects
+            if (distance < 0) {
+                clearInterval(countdownInterval); // Stop the countdown
+                countdownElement.innerHTML = "It's here!";
+                birthdayMessageElement.classList.remove('hidden');
+                
+                // Play song if not already playing
+                if (birthdaySong.paused) { // Check if paused before attempting to play
+                    birthdaySong.play()
+                        .then(() => {
+                            musicControlButton.textContent = "Pause Birthday Song";
+                        })
+                        .catch(error => {
+                            console.error("Autoplay prevented or other error on countdown end:", error);
+                        });
+                }
+                musicControlButton.style.display = 'none'; // Hide button once birthday arrives
+                createConfetti(); // Trigger confetti!
+            }
+        }
+
+        // Event listener for the "Open Me" card
+        openMeCard.addEventListener('click', () => {
+            // Hide the overlay
+            openMeOverlay.classList.add('hidden-overlay');
+
+            // Show the main content after a slight delay to allow overlay transition
+            setTimeout(() => {
+                mainContent.classList.add('visible-content');
+                // Start the main title animation
+                mainTitle.classList.add('animate-pop-in');
+                // Start the countdown
+                countdownInterval = setInterval(updateCountdown, 1000);
+                // Initial call to display countdown immediately
+                updateCountdown();
+                // Play the birthday song automatically after opening
+                playBirthdaySong();
+            }, 800); // Adjust delay to match overlay transition duration
+        });
+
+        // Event listener for music control button (only available after opening)
+        musicControlButton.addEventListener('click', playBirthdaySong);
+
+        // Initial state: hide main content
+        mainContent.classList.remove('visible-content'); // Ensure it's hidden on load
+    </script>
+</body>
+</html>
